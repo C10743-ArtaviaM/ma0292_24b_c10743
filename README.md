@@ -110,7 +110,7 @@ ________________________________________________________________________________
 
 We are Computer Science and Informatics Students <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> from Universidad de Costa Rica.
 
-- :man_technologist: Students: Mauricio Artavia Monge, C10743 | /NOMBRE/, /CARNET/ | /NOMBRE/, /CARNET/ | /NOMBRE/, /CARNET/.
+- :man_technologist: Students: Mauricio Artavia Monge, C10743 | Kenneth Delgado Cárdenas, C22540 | /NOMBRE/, /CARNET/ | /NOMBRE/, /CARNET/.
 
 - 👨‍🏫 Professor: Felix Nunez Vanegas.
 
