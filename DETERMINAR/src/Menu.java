@@ -1,48 +1,55 @@
-import Libs.MathLib;
+import java.util.Scanner;
 
 public class Menu {
+        private MathLib mathLib;
+        private double[][] actualSystem;
+
+        public Menu() {
+                this.mathLib = new MathLib();
+        }
+
         public void run() {
-                System.out.println("Estamos entrando al Menu");
+                Scanner in = new Scanner(System.in);
+                boolean continuar = true;
 
-                System.out.println("Procedemos a probar los determinantes");
+                while (continuar) {
+                        System.out.println("\n=== Menú Principal ===");
+                        System.out.println("1. Generar un nuevo sistema");
+                        System.out.println("2. Mostrar sistema actual");
+                        System.out.println("3. Salir");
+                        System.out.print("Seleccione una opción: ");
+                        int opcion = in.nextInt();
 
-                double matrizNormal[][] = { { 1, 2, 3 },
-                                { 4, 5, 6 },
-                                { 7, 8, 9 } };
+                        switch (opcion) {
+                                case 1:
+                                        actualSystem = mathLib.generateAleatorySystem(3, 3, -10, 10);
+                                        System.out.println("Nuevo sistema generado:");
+                                        imprimirSistema();
+                                        break;
+                                case 2:
+                                        if (actualSystem != null) {
+                                                imprimirSistema();
+                                        } else {
+                                                System.out.println("No hay sistema generado aún.");
+                                        }
+                                        break;
+                                case 3:
+                                        continuar = false;
+                                        System.out.println("¡Hasta luego!");
+                                        break;
+                                default:
+                                        System.out.println("Opción no válida. Intente de nuevo.");
+                        }
+                }
+                in.close();
+        }
 
-                double matrizTInferior[][] = { { 1, 0, 0 },
-                                { 4, 5, 0 },
-                                { 7, 8, 9 } };
-
-                double matrizTSuperior[][] = { { 1, 2, 3 },
-                                { 0, 5, 6 },
-                                { 0, 0, 9 } };
-
-                double matrizN2[][] = { { 1, 2 },
-                                { 3, 4 } };
-
-                double matrizN2TInferior[][] = { { 1, 0 },
-                                { 3, 4 } };
-
-                double matrizN2TSuperior[][] = { { 1, 2 },
-                                { 0, 4 } };
-
-                double matrizN1[][] = { { 1 } };
-
-                MathLib mLib = new MathLib();
-
-                System.out.println("Determinante del 3x3 es: " + mLib.determinante(matrizNormal));
-                System.out.println(
-                                "Determinante del 3x3 Triangular Inferior es: " + mLib.determinante(matrizTInferior));
-                System.out.println(
-                                "Determinante del 3x3 Triangular Superior es: " + mLib.determinante(matrizTSuperior));
-                System.out.println("Determinante del 2x2 es: " + mLib.determinante(matrizN2));
-                System.out.println(
-                                "Determinante del 2x2 Triangular Inferior es: " + mLib.determinante(matrizN2TInferior));
-                System.out.println(
-                                "Determinante del 2x2 Triangular Superior es: " + mLib.determinante(matrizN2TSuperior));
-                System.out.println("Determinante del 1x1 es: " + mLib.determinante(matrizN1));
-
-                System.exit(0);
+        private void imprimirSistema() {
+                for (double[] fila : actualSystem) {
+                        for (double valor : fila) {
+                                System.out.printf("%6d", (int) valor);
+                        }
+                        System.out.println();
+                }
         }
 }

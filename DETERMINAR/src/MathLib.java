@@ -1,4 +1,4 @@
-package Libs;
+import java.util.Random;
 
 /**
  * Clase que proporciona funciones matemáticas para el manejo de matrices y
@@ -165,4 +165,31 @@ public class MathLib {
         }
         return mMenor;
     }
+
+    public boolean haveSolution(Matrix matrix) {
+        double[][] data = matrix.getData();
+        return determinante(data) != 0;
+    }
+
+    /* =-=-= FIN MANEJO DE MATRICES =-=-= */
+
+    /* =-=-= MANEJO DE SISTEMAS DE ECUACIONES =-=-= */
+
+    /* =-=-= GENERACION SISTEMA ECUACIONES =-=-= */
+    // Generacion de sistema de ecuaciones con solucion unica.
+    public double[][] generateAleatorySystem(int rows, int columns, int min, int max) {
+        Random random = new Random();
+        double[][] matrix;
+
+        do {
+            matrix = new double[rows][columns];
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    matrix[i][j] = random.nextInt(max - min + 1) + min; // Valores entre [min, max]
+                }
+            }
+        } while (determinante(matrix) == 0); // Reintentar si no tiene solucion unica.
+        return matrix;
+    }
+
 }

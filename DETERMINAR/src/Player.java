@@ -10,7 +10,7 @@ public class Player {
     private String name;
 
     /* =-=-= METODO CONSTRUCTOR DE LA CLASE PLAYER */
-    public Player (String name, boolean canPlay) {
+    public Player(String name, boolean canPlay) {
         this.name = name;
         this.score = 0;
         this.canPlay = true;
@@ -18,17 +18,31 @@ public class Player {
     }
 
     /* =-=-= MODIFICADORES DE CLASE =-=-= */
-    public double getDeterminant() { return this.determinant; }
+    public double getDeterminant() {
+        return this.determinant;
+    }
 
-    public void setDeterminant(double determinant) { this.determinant = determinant; }
+    public void setDeterminant(double determinant) {
+        this.determinant = determinant;
+    }
 
-    public String getName() { return this.name; }
+    public String getName() {
+        return this.name;
+    }
 
-    public double getScore() { return this.score; }
+    public double getScore() {
+        return this.score;
+    }
 
-    public void setScore(double score) { this.score = score; }
+    public void setScore(double score) {
+        this.score = score;
+    }
 
-    public boolean getPlayStatus() { return canPlay; }
+    public boolean getPlayStatus() {
+        return canPlay;
+    }
 
-    public void setPlayStatus(boolean playStatus) { this.canPlay = playStatus; }
+    public void setPlayStatus(boolean playStatus) {
+        this.canPlay = playStatus;
+    }
 }

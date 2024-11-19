@@ -1,5 +1,5 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        Loader.load();
+        Loader.load(); // Pantalla de carga
     }
 }
