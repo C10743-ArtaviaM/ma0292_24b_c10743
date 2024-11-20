@@ -13,6 +13,7 @@ public class Menu {
                 String playerName;
                 this.mathLib = new MathLib();
                 this.players = new Player[3]; // Tres Jugadores
+                System.out.println("\n---- !Bienvenidos al juego Determinar¡ ----");
                 for (int i = 0; i < players.length; i++) {
                         System.out.println("Digite su nombre para el jugador " + (i + 1) + ": ");
                         playerName = in.nextLine();
@@ -23,36 +24,41 @@ public class Menu {
 
         public void run() {
                 boolean continuar = true;
-
+            
                 while (continuar) {
-                        System.out.println("\n=== Menú Principal ===");
-                        System.out.println("1. Generar un nuevo sistema");
-                        System.out.println("2. Mostrar sistema actual");
-                        System.out.println("3. Salir");
-                        System.out.print("Seleccione una opción: ");
+                    System.out.println("\n=== Menú Principal ===");
+                    System.out.println("1. Generar un nuevo sistema");
+                    System.out.println("2. Mostrar sistema actual");
+                    System.out.println("3. Salir");
+                    System.out.print("¡Seleccione una  de las tres opciones que ofrece el juego!: ");
+            
+                    try {
                         int opcion = Integer.parseInt(in.nextLine());
-
+            
                         switch (opcion) {
-                                case 1:
-                                        beginGame();
-                                        break;
-                                case 2:
-                                        if (actualSystem != null) {
-                                                printSystem();
-                                        } else {
-                                                System.out.println("No hay sistema generado aún.");
-                                        }
-                                        break;
-                                case 3:
-                                        continuar = false;
-                                        System.out.println("¡Hasta luego!");
-                                        break;
-                                default:
-                                        System.out.println("Opción no válida. Intente de nuevo.");
+                            case 1:
+                                beginGame();
+                                break;
+                            case 2:
+                                if (actualSystem != null) {
+                                    printSystem();
+                                } else {
+                                    System.out.println("No hay sistema generado aún.");
+                                }
+                                break;
+                            case 3:
+                                continuar = false;
+                                System.out.println("¡Gracias por Jugar!");
+                                break;
+                            default:
+                                System.out.println("Opción no válida. Elija una de las opciones que están disponibles.");
                         }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Entrada inválida. Por favor, ingrese una opción válida.");
+                    }
                 }
                 in.close();
-        }
+            }
 
         private void beginGame() {
                 actualSystem = mathLib.generateAleatorySystem(3, 3, -5, 5);
