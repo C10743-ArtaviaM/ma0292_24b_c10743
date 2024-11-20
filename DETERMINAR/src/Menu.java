@@ -1,55 +1,87 @@
 import java.util.Scanner;
 
 public class Menu {
-        private MathLib mathLib;
-        private double[][] actualSystem;
-        private Player[] players;
-        private double originalDeterminant;
+        /* =-=-= CONSTANTES =-=-= */
+        /* =-=-= Declaracion de Constantes de Tipo Integer =-=-= */
         private final int MAX_ROUNDS = 5;
+
+        /* =-=-= VARIABLES =-=-= */
+        /* =-=-= Declaracion de Variables de Tipo Integer =-=-= */
+        private int refreshCount;
+        private int amountSystems;
+
+        /* =-=-= Declaracion de Variables de Tipo Double =-=-= */
+        private double originalDeterminant;
+
+        /* =-=-= Declaracion de Variables de Tipo Double[][] =-=-= */
+        private double[][] actualSystem;
+
+        /* =-=-= Declaracion de Variables de Tipo Clase MathLib =-=-= */
+        private MathLib mathLib;
+
+        /* =-=-= Declaracion de Variables de Tipo Clase Player =-=-= */
+        private Player[] players;
+
+        /* =-=-= Declaracion de Variables de Tipo Clase Scanner =-=-= */
         private Scanner in;
 
-        public Menu() {
-                in = new Scanner(System.in);
-                String playerName;
+        /* =-=-= Metodo Constructor de la clase Menu =-=-= */
+        public Menu(String[] playersList) {
+                this.refreshCount = 3;
+                this.in = new Scanner(System.in);
                 this.mathLib = new MathLib();
-                this.players = new Player[3]; // Tres Jugadores
-                System.out.println("\n---- !Bienvenidos al juego Determinar¡ ----");
-                for (int i = 0; i < players.length; i++) {
-                        System.out.println("Digite su nombre para el jugador " + (i + 1) + ": ");
-                        playerName = in.nextLine();
-                        players[i] = new Player(playerName, true);
-                        System.out.println("Bienvenido " + playerName + "!");
+                this.players = new Player[3];
+                this.amountSystems = getValidatedInput("Ingrese la cantidad de sistemas deseados: ", 3, 10);
+
+                for (int i = 0; i < playersList.length; i++) {
+                        this.players[i] = new Player(playersList[i], true);
                 }
+
+                generateAndVoteSystems(this.amountSystems);
         }
 
         public void run() {
-                boolean continuar = true;
+                /* =-=-= Declaracion de Variables de Tipo Boolean =-=-= */
+                boolean proceed = true;
 
-                while (continuar) {
+                /* =-=-= Declaracion de Variables de Tipo Integer =-=-= */
+                int option;
+
+                while (proceed) {
                         System.out.println("\n=== Menú Principal ===");
-                        System.out.println("1. Generar un nuevo sistema");
-                        System.out.println("2. Mostrar sistema actual");
-                        System.out.println("3. Salir");
-                        System.out.print("¡Seleccione una  de las tres opciones que ofrece el juego!: ");
+                        System.out.println("1. Empezar Juego");
+                        System.out.println("2. Refrescar sistemas");
+                        System.out.println("3. Mostrar sistema actual");
+                        System.out.println("4. Salir");
+                        System.out.print("¡Seleccione una opción!: ");
 
                         try {
-                                int opcion = Integer.parseInt(in.nextLine());
+                                option = Integer.parseInt(in.nextLine());
 
-                                switch (opcion) {
+                                switch (option) {
                                         case 1:
                                                 beginGame();
                                                 break;
+
                                         case 2:
+                                                refreshSystems();
+                                                break;
+
+                                        case 3:
                                                 if (actualSystem != null) {
-                                                        printSystem();
+                                                        printSystem(actualSystem);
+                                                        System.out.println(
+                                                                        "Determinante actual: " + originalDeterminant);
                                                 } else {
                                                         System.out.println("No hay sistema generado aún.");
                                                 }
                                                 break;
-                                        case 3:
-                                                continuar = false;
+
+                                        case 4:
+                                                proceed = false;
                                                 System.out.println("¡Gracias por Jugar!");
                                                 break;
+
                                         default:
                                                 System.out.println(
                                                                 "Opción no válida. Elija una de las opciones que están disponibles.");
@@ -62,26 +94,37 @@ public class Menu {
         }
 
         private void beginGame() {
+                /* =-=-= Declaracion de Variables de Tipo Boolean =-=-= */
+                boolean haveToRepeat = true;
+
+                /* =-=-= Declaracion de Variables de Tipo Double =-=-= */
+                double newDeterminant;
+                double previousValue;
+
+                /* =-=-= Declaracion de Variables de Tipo Integer =-=-= */
+                int round = 1;
+                int row, column, newValue;
+
                 for (int i = 0; i < players.length; i++) {
                         players[i].setScore(0);
                         players[i].setDeterminant(0);
                         players[i].setPlayStatus(true);
                 }
 
-                boolean haveToRepeat = true;
-                actualSystem = mathLib.generateAleatorySystem(3, 3, -5, 5);
                 originalDeterminant = mathLib.determinante(actualSystem);
                 System.out.println("Nuevo sistema generado:");
-                printSystem();
+                printSystem(actualSystem);
                 System.out.println("Determinante original: " + originalDeterminant);
 
-                int round = 1;
                 while (round <= MAX_ROUNDS) {
                         System.out.println("\n=== Ronda " + round + " ===");
+
                         for (Player player : players) {
                                 haveToRepeat = true;
+
                                 while (haveToRepeat) {
                                         haveToRepeat = false;
+
                                         if (!player.getPlayStatus()) {
                                                 System.out.println(player.getName() + " pierde su turno.");
                                                 player.setPlayStatus(true); // Restablece para el próximo turno
@@ -90,13 +133,11 @@ public class Menu {
 
                                         System.out.println(player.getName() + ", es tu turno.");
 
-                                        int row, column;
-                                        double newValue;
-
                                         // Validar fila
                                         do {
                                                 System.out.print("Ingresa la fila a modificar (1-3): ");
-                                                row = Integer.parseInt(in.nextLine()) - 1;
+                                                row = getValidatedInput("Ingresa la fila a modificar", 1, 3) - 1;
+
                                                 if (row < 0 || row >= actualSystem.length) {
                                                         System.out.println("Fila inválida. Debe estar entre 1 y 3.");
                                                 }
@@ -105,7 +146,8 @@ public class Menu {
                                         // Validar columna
                                         do {
                                                 System.out.print("Ingresa la columna a modificar (1-3): ");
-                                                column = Integer.parseInt(in.nextLine()) - 1;
+                                                column = getValidatedInput("Ingresa la columna a modificar", 1, 3) - 1;
+
                                                 if (column < 0 || column >= actualSystem[0].length) {
                                                         System.out.println("Columna inválida. Debe estar entre 1 y 3.");
                                                 }
@@ -114,21 +156,21 @@ public class Menu {
                                         // Validar nuevo valor
                                         do {
                                                 System.out.print("Ingresa el nuevo valor (-5 a 5): ");
-                                                newValue = Double.parseDouble(in.nextLine());
+                                                newValue = getValidatedInput("Ingresa el nuevo valor", -5, 5);
+
                                                 if (newValue < -5 || newValue > 5) {
                                                         System.out.println("Valor inválido. Debe estar entre -5 y 5.");
                                                 }
                                         } while (newValue < -5 || newValue > 5);
 
-                                        double previousValue = actualSystem[row][column];
+                                        previousValue = actualSystem[row][column];
                                         actualSystem[row][column] = newValue;
-                                        double newDeterminant = mathLib.determinante(actualSystem);
+                                        newDeterminant = mathLib.determinante(actualSystem);
 
                                         if (newDeterminant == originalDeterminant) {
                                                 System.out.println("El determinante no cambió. Repite el turno.");
                                                 actualSystem[row][column] = previousValue; // Revertir el cambio
                                                 haveToRepeat = true;
-                                                // continue;
                                         }
 
                                         if (newDeterminant == player.getDeterminant()) {
@@ -142,7 +184,7 @@ public class Menu {
                                                 }
                                         }
 
-                                        printSystem();
+                                        printSystem(actualSystem);
                                         System.out.println("Determinante actual: " + newDeterminant);
                                         System.out.println("Puntaje acumulado: " + player.getScore());
 
@@ -158,17 +200,21 @@ public class Menu {
                 getWinner();
         }
 
-        private void updatePoints(Player player, double nuevoDeterminante) {
-                double diference = Math.abs(originalDeterminant - nuevoDeterminante);
-                if (nuevoDeterminante > 0) {
+        private void updatePoints(Player player, double newDeterminantForUpdate) {
+                /* =-=-= Declaracion de Variables de Tipo Double =-=-= */
+                double diference = Math.abs(originalDeterminant - newDeterminantForUpdate);
+
+                if (newDeterminantForUpdate > 0) {
                         player.setScore(player.getScore() + diference);
                 } else {
-                        player.setScore(player.getScore() + nuevoDeterminante); // Suma determinante negativo
+                        player.setScore(player.getScore() + newDeterminantForUpdate); // Suma determinante negativo
                 }
         }
 
         private void getWinner() {
+                /* =-=-= Declaracion de Variables de Tipo Clase Player =-=-= */
                 Player winner = null;
+
                 for (Player player : players) {
                         if (winner == null || player.getScore() > winner.getScore()) {
                                 winner = player;
@@ -182,12 +228,102 @@ public class Menu {
                 }
         }
 
-        private void printSystem() {
-                for (double[] fila : actualSystem) {
-                        for (double valor : fila) {
-                                System.out.printf("%6d", (int) valor);
+        private void printSystem(double[][] system) {
+                for (int i = 0; i < system.length; i++) {
+                        for (int j = 0; j < system[i].length - 1; j++) {
+                                System.out.printf("%6d ", (int) system[i][j]);
                         }
-                        System.out.println();
+                        System.out.printf("| %6d\n", (int) system[i][system[i].length - 1]); // Término independiente
                 }
+        }
+
+        private void generateAndVoteSystems(int amount) {
+                // Crear el arreglo dinámico para la cantidad deseada de sistemas
+                /* =-=-= Declaracion de Variables de Tipo Double[][][] =-=-= */
+                double[][][] systems = new double[amount][3][4];
+
+                /* =-=-= Declaracion de Variables de Tipo Integer =-=-= */
+                int selectedSystem;
+
+                System.out.println("\nGenerando " + amount + " sistemas de ecuaciones con solución única...");
+
+                // Generar sistemas aleatorios con solución única
+                for (int i = 0; i < amount; i++) {
+                        do {
+                                systems[i] = mathLib.generateAleatorySystem(3, 4, -5, 5); // Generar matriz ampliada
+                        } while (mathLib.determinante(systems[i]) == 0); // Rechazar sistemas sin solución única
+
+                        System.out.println("\nSistema " + (i + 1) + ":");
+                        printSystem(systems[i]);
+                }
+
+                // Votación
+                System.out.println("\n--- ¡Es hora de votar! ---");
+                selectedSystem = conductVoting(systems);
+
+                // Asignar el sistema seleccionado como actual
+                actualSystem = systems[selectedSystem];
+                originalDeterminant = mathLib.determinante(actualSystem);
+                System.out.println("\nSistema seleccionado:");
+                printSystem(actualSystem);
+                System.out.println("Determinante del sistema seleccionado: " + originalDeterminant);
+        }
+
+        private void refreshSystems() {
+                if (refreshCount > 0) {
+                        System.out.println("\n--- Refrescando sistemas ---");
+                        generateAndVoteSystems(amountSystems);
+                        refreshCount--;
+                        System.out.println("Te quedan " + refreshCount + " refrescos disponibles.");
+                } else {
+                        System.out.println("Ya no puedes refrescar los sistemas.");
+                }
+        }
+
+        private int getValidatedInput(String prompt, int min, int max) {
+                /* =-=-= Declaracion de Variables de Tipo Integer =-=-= */
+                int value;
+
+                do {
+                        System.out.print(prompt + " (" + min + "-" + max + "): ");
+                        try {
+                                value = Integer.parseInt(in.nextLine());
+                                if (value >= min && value <= max) {
+                                        return value;
+                                } else {
+                                        System.out.println("Entrada fuera de rango. Inténtalo de nuevo.");
+                                }
+                        } catch (NumberFormatException e) {
+                                System.out.println("Entrada inválida. Debe ser un número entero.");
+                        }
+                } while (true);
+        }
+
+        private int conductVoting(double[][][] systems) {
+                /* =-=-= Declaracion de Variables de Tipo Integer =-=-= */
+                int choice;
+                int selectedSystem;
+
+                /* =-=-= Declaracion de Variables de Tipo Integer[] =-=-= */
+                int[] votes = new int[systems.length];
+
+                // Cada jugador vota por su sistema favorito
+                for (Player player : players) {
+                        choice = getValidatedInput(
+                                        player.getName() + ", selecciona el sistema con el que deseas jugar", 1,
+                                        systems.length);
+                        votes[choice - 1]++;
+                }
+
+                // Determinar el índice del sistema más votado
+                selectedSystem = 0;
+
+                for (int i = 1; i < votes.length; i++) {
+                        if (votes[i] > votes[selectedSystem]) {
+                                selectedSystem = i;
+                        }
+                }
+
+                return selectedSystem;
         }
 }

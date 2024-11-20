@@ -33,8 +33,7 @@ public class Matrix {
         }
     }
 
-    // Metodo obtencion datos de matriz.
-    public double[][] getData() {
+    public double[][] getMatrix() {
         return data;
     }
 }

@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.Scanner;
+
 import javax.swing.*;
 
 public class Loader {
@@ -8,10 +10,23 @@ public class Loader {
     public static void load() {
         process(5000);
         /* =-=-= Declaracion de Variables de Tipo Clase =-=-= */
-        Menu menu = new Menu();
+        Menu menu = dataAccess();
         // Pasa el JFrame cargado como argumento al método run de Menu.
         process(2000);
         menu.run();
+    }
+
+    public static Menu dataAccess() {
+        String[] playersList = new String[3];
+        Scanner in = new Scanner(System.in);
+        System.out.println("\n---- !Bienvenidos al juego Determinar¡ ----");
+        for (int i = 0; i < playersList.length; i++) {
+            System.out.print("Digite el nombre para el jugador " + (i + 1) + ": ");
+            playersList[i] = in.nextLine();
+            System.out.println("Bienvenido " + playersList[i] + "!");
+        }
+
+        return new Menu(playersList);
     }
 
     /**

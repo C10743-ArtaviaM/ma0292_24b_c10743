@@ -167,7 +167,7 @@ public class MathLib {
     }
 
     public boolean haveSolution(Matrix matrix) {
-        double[][] data = matrix.getData();
+        double[][] data = matrix.getMatrix();
         return determinante(data) != 0;
     }
 
