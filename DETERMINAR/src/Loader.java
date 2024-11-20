@@ -3,12 +3,21 @@ import javax.swing.*;
 
 public class Loader {
     /**
-     * Método que simula una pantalla de carga antes de iniciar el menú principal.
+     * Método que prepara el juego antes de iniciar el menú principal.
      */
     public static void load() {
+        process(5000);
         /* =-=-= Declaracion de Variables de Tipo Clase =-=-= */
-        Menu menu;
+        Menu menu = new Menu();
+        // Pasa el JFrame cargado como argumento al método run de Menu.
+        process(2000);
+        menu.run();
+    }
 
+    /**
+     * Método que simula una pantalla de carga.
+     */
+    public static void process(int time) {
         /* =-=-= Declaracion de Variables de Tipo Clase JFrame =-=-= */
         JFrame loadingFrame;
 
@@ -34,7 +43,7 @@ public class Loader {
 
         // Simulacion de una carga de 5 segundos antes de continuar.
         try {
-            Thread.sleep(5000); // Espera 5 segundos (5000 milisegundos).
+            Thread.sleep(time); // Espera 5 segundos (5000 milisegundos).
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -42,9 +51,5 @@ public class Loader {
         // Oculta el JFrame de carga después de los 5 segundos.
         loadingFrame.setVisible(false);
         loadingFrame.dispose(); // Liberacion de recursos del JFrame de carga.
-
-        menu = new Menu();
-        // Pasa el JFrame cargado como argumento al método run de Menu.
-        menu.run();
     }
 }
