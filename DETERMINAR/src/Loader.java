@@ -7,7 +7,7 @@ public class Loader {
      */
     public static void load() {
         /* =-=-= Declaracion de Variables de Tipo Clase =-=-= */
-        Menu menu = new Menu();
+        Menu menu;
 
         /* =-=-= Declaracion de Variables de Tipo Clase JFrame =-=-= */
         JFrame loadingFrame;
@@ -43,6 +43,7 @@ public class Loader {
         loadingFrame.setVisible(false);
         loadingFrame.dispose(); // Liberacion de recursos del JFrame de carga.
 
+        menu = new Menu();
         // Pasa el JFrame cargado como argumento al método run de Menu.
         menu.run();
     }
