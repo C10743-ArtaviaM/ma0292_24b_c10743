@@ -42,17 +42,22 @@ public class Menu {
 
         public void run() {
                 /* =-=-= Declaracion de Variables de Tipo Boolean =-=-= */
+                boolean exitProcess = true;
                 boolean proceed = true;
+                boolean resetProcess = true;
 
                 /* =-=-= Declaracion de Variables de Tipo Integer =-=-= */
+                int exitOption;
                 int option;
+                int resetOption;
 
                 while (proceed) {
                         System.out.println("\n=== Menú Principal ===");
                         System.out.println("1. Empezar Juego");
                         System.out.println("2. Refrescar sistemas");
                         System.out.println("3. Mostrar sistema actual");
-                        System.out.println("4. Salir");
+                        System.out.println("4. Reiniciar Juego");
+                        System.out.println("5. Salir");
                         System.out.print("¡Seleccione una opción!: ");
 
                         try {
@@ -60,11 +65,11 @@ public class Menu {
 
                                 switch (option) {
                                         case 1:
-                                                beginGame();
+                                                beginGame(); // Empezamos Juego
                                                 break;
 
                                         case 2:
-                                                refreshSystems();
+                                                refreshSystems(); // Refrescamos Sistemas
                                                 break;
 
                                         case 3:
@@ -78,8 +83,55 @@ public class Menu {
                                                 break;
 
                                         case 4:
-                                                proceed = false;
-                                                System.out.println("¡Gracias por Jugar!");
+                                                do {
+                                                        try {
+                                                                System.out.println(
+                                                                                "¿Estás seguro de que deseas resetear el juego?\n1) SI\n2) NO");
+                                                                resetOption = Integer.parseInt(in.nextLine());
+
+                                                                if (resetOption == 1) {
+                                                                        resetGame(1);
+                                                                        resetProcess = false;
+                                                                } else if (resetOption == 2) {
+                                                                        System.out.println(
+                                                                                        "¡Sigamos jugando con el mismo sistema!");
+                                                                        resetProcess = false;
+                                                                } else {
+                                                                        System.out.println(
+                                                                                        "¡VAMOS! Que es 1 o 2, no estamos eligiendo filas o valores :v");
+                                                                }
+                                                        } catch (NumberFormatException e) {
+                                                                System.out.println(
+                                                                                "¡VAMOS! Que es 1 o 2, no estamos eligiendo filas o valores :v");
+                                                        }
+                                                } while (resetProcess);
+                                                break;
+
+                                        case 5:
+                                                exitProcess = true;
+                                                do {
+                                                        try {
+                                                                System.out.println(
+                                                                                "¿Estás seguro de que deseas salir?\n1) SI\n2) NO");
+                                                                exitOption = Integer.parseInt(in.nextLine());
+
+                                                                if (exitOption == 1) {
+                                                                        proceed = false; // Salida
+                                                                        System.out.println("¡Gracias por Jugar!");
+                                                                        exitProcess = false;
+                                                                } else if (exitOption == 2) {
+                                                                        System.out.println("¡Sigamos Jugando!");
+                                                                        exitProcess = false;
+                                                                } else {
+                                                                        System.out.println(
+                                                                                        "¡UY! Alguien quedo traumado con el juego. Creo pusiste una mala opcion por error xD");
+                                                                }
+                                                        } catch (NumberFormatException e) {
+                                                                System.out.println(
+                                                                                "¡UY! Alguien quedo traumado con el juego. Creo pusiste una mala opcion por error xD");
+                                                                continue; // Regresa a la pregunta del ciclo do-while
+                                                        }
+                                                } while (exitProcess);
                                                 break;
 
                                         default:
@@ -91,6 +143,29 @@ public class Menu {
                         }
                 }
                 in.close();
+        }
+
+        private void resetGame(int totalReset) {
+                // Si totalReset es 1, resetea todo y sistemas.
+                for (Player player : players) {
+                        player.setScore(0);
+                        player.setDeterminant(0);
+                        player.setPlayStatus(true); // Asegura que todos los jugadores puedan jugar.
+                }
+
+                if (totalReset == 1) {
+                        // Generamos un nuevo sistema de ecuaciones.
+                        generateAndVoteSystems(amountSystems);
+
+                        // Mostramos el mensaje de reinicio.
+                        System.out.println("\n¡El juego ha sido reiniciado!");
+                        System.out.println("\n¡Los puntajes han sido reseteados!");
+                        System.out.println("\n¡El sistema ha sido completamente reinicido!");
+                        printSystem(actualSystem); // Mostrar el nuevo sistema
+                        System.out.println("Determinante original: " + originalDeterminant);
+                } else {
+                        System.out.println("\n¡Los puntajes han sido reseteados!");
+                }
         }
 
         private void beginGame() {
@@ -105,11 +180,7 @@ public class Menu {
                 int round = 1;
                 int row, column, newValue;
 
-                for (int i = 0; i < players.length; i++) {
-                        players[i].setScore(0);
-                        players[i].setDeterminant(0);
-                        players[i].setPlayStatus(true);
-                }
+                resetGame(0);
 
                 originalDeterminant = mathLib.determinante(actualSystem);
                 System.out.println("Nuevo sistema generado:");
@@ -135,7 +206,6 @@ public class Menu {
 
                                         // Validar fila
                                         do {
-                                                System.out.print("Ingresa la fila a modificar (1-3): ");
                                                 row = getValidatedInput("Ingresa la fila a modificar", 1, 3) - 1;
 
                                                 if (row < 0 || row >= actualSystem.length) {
@@ -145,7 +215,6 @@ public class Menu {
 
                                         // Validar columna
                                         do {
-                                                System.out.print("Ingresa la columna a modificar (1-3): ");
                                                 column = getValidatedInput("Ingresa la columna a modificar", 1, 3) - 1;
 
                                                 if (column < 0 || column >= actualSystem[0].length) {
@@ -155,7 +224,6 @@ public class Menu {
 
                                         // Validar nuevo valor
                                         do {
-                                                System.out.print("Ingresa el nuevo valor (-5 a 5): ");
                                                 newValue = getValidatedInput("Ingresa el nuevo valor", -5, 5);
 
                                                 if (newValue < -5 || newValue > 5) {
@@ -224,7 +292,8 @@ public class Menu {
                 if (winner.getScore() <= 0) {
                         System.out.println("Nadie gana. Todos tienen puntajes negativos.");
                 } else {
-                        System.out.println(winner.getName() + " gana con " + winner.getScore() + " puntos.");
+                        System.out.println("Felicidades," + winner.getName() + " ha ganado el juego con "
+                                        + winner.getScore() + " puntos.");
                 }
         }
 
@@ -285,7 +354,7 @@ public class Menu {
                 int value;
 
                 do {
-                        System.out.print(prompt + " (" + min + "-" + max + "): ");
+                        System.out.print(prompt + " (" + min + " a " + max + "): ");
                         try {
                                 value = Integer.parseInt(in.nextLine());
                                 if (value >= min && value <= max) {
