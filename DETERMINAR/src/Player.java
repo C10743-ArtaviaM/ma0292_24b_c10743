@@ -1,4 +1,6 @@
 public class Player {
+    public static final String GREEN = "\033[32m"; // Verde
+    public static final String RESET = "\033[0m"; // Resetear color
     /* =-=-= Declaracion de Variables de Tipo Boolean =-=-= */
     private boolean canPlay;
 
@@ -27,7 +29,7 @@ public class Player {
     }
 
     public String getName() {
-        return this.name;
+        return (GREEN + this.name + RESET);
     }
 
     public double getScore() {

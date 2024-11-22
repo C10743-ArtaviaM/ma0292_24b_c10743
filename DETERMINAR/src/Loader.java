@@ -4,26 +4,46 @@ import java.util.Scanner;
 import javax.swing.*;
 
 public class Loader {
+    /* =-=-= CONSTANTES =-=-= */
+    /* =-=-= Declaracion de Constantes de Tipo String =-=-= */
+    public static final String BLUE = "\033[34m"; // Azul
+    public static final String CYAN = "\033[36m"; // Cian
+    public static final String GREEN = "\033[32m"; // Verde
+    public static final String RESET = "\033[0m"; // Resetear color
+    public static final String YELLOW = "\033[33m"; // Amarillo
+
     /**
      * Método que prepara el juego antes de iniciar el menú principal.
      */
     public static void load() {
         process(5000);
-        /* =-=-= Declaracion de Variables de Tipo Clase =-=-= */
-        Menu menu = dataAccess();
+        /* =-=-= Declaracion de Variables de Tipo Clase Menu =-=-= */
+        Menu menu;
+
+        menu = dataAccess();
+
         // Pasa el JFrame cargado como argumento al método run de Menu.
         process(2000);
         menu.run();
     }
 
     public static Menu dataAccess() {
-        String[] playersList = new String[3];
-        Scanner in = new Scanner(System.in);
-        System.out.println("\n---- !Bienvenidos al juego Determinar¡ ----");
+        /* =-=-= Declaracion de Variables de Tipo Clase Scanner =-=-= */
+        Scanner in;
+        /* =-=-= Declaracion de Variables de Tipo String[] =-=-= */
+        String[] playersList;
+
+        playersList = new String[3];
+        in = new Scanner(System.in);
+
+        System.out.println(GREEN + "\n---- !Bienvenidos al juego Determinar¡ ----" + RESET);
+        System.out.println(
+                YELLOW + "Objetivo: Resolver la matriz con mayor determinante y maximizar tu puntaje!!!" + RESET);
+
         for (int i = 0; i < playersList.length; i++) {
-            System.out.print("Digite el nombre para el jugador " + (i + 1) + ": ");
+            System.out.print(CYAN + "Digite el nombre para el jugador " + (i + 1) + ": " + RESET);
             playersList[i] = in.nextLine();
-            System.out.println("Bienvenido " + playersList[i] + "!");
+            System.out.println(BLUE + "Bienvenido " + RESET + GREEN + playersList[i] + "!" + RESET);
         }
 
         return new Menu(playersList);
@@ -39,7 +59,7 @@ public class Loader {
         /* =-=-= Declaracion de Variables de Tipo Clase JProgressBar =-=-= */
         JProgressBar progressBar;
 
-        loadingFrame = new JFrame("DETERMINANTE | LOADING . . .");
+        loadingFrame = new JFrame("DETERMINAR | LOADING . . .");
 
         loadingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loadingFrame.setSize(500, 100);
@@ -56,9 +76,9 @@ public class Loader {
         // Hace visible el JFrame de carga.
         loadingFrame.setVisible(true);
 
-        // Simulacion de una carga de 5 segundos antes de continuar.
+        // Simulacion de una carga de x segundos antes de continuar.
         try {
-            Thread.sleep(time); // Espera 5 segundos (5000 milisegundos).
+            Thread.sleep(time); // Espera x segundos ([x * 1000] milisegundos).
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
