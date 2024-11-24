@@ -1,8 +1,10 @@
 import java.util.Random;
 
 /**
- * Clase que proporciona funciones matemáticas para el manejo de matrices y
- * cálculo de determinantes.
+ * Clase que proporciona funciones matemáticas para el manejo sistemas de
+ * ecuaciones, matrices y cálculo de determinantes.
+ * 
+ * @author Mauricio Artavia Monge C10743 - Kenneth Delgado Cárdenas C22540
  */
 public class MathLib {
 
@@ -177,10 +179,27 @@ public class MathLib {
 
     /* =-=-= GENERACION SISTEMA ECUACIONES =-=-= */
     // Generacion de sistema de ecuaciones con solucion unica.
+    /**
+     * Genera un sistema de ecuaciones aleatorio con una solución única.
+     * El sistema es una matriz de números aleatorios dentro de un rango dado.
+     * Se asegura que el determinante de la matriz no sea cero, lo que garantiza que
+     * el sistema tenga una solución única. Si el determinante es cero, genera un
+     * nuevo sistema hasta que se cumpla esta condición.
+     *
+     * @param rows    El número de filas de la matriz (también el número de
+     *                ecuaciones).
+     * @param columns El número de columnas de la matriz (también el número de
+     *                variables más un término independiente).
+     * @param min     El valor mínimo que pueden tener los elementos de la matriz.
+     * @param max     El valor máximo que pueden tener los elementos de la matriz.
+     * @return Una matriz {@code double} que representa el sistema de ecuaciones
+     *         aleatorio.
+     */
     public double[][] generateAleatorySystem(int rows, int columns, int min, int max) {
         Random random = new Random();
         double[][] matrix;
 
+        // Genera un sistema de ecuaciones
         do {
             matrix = new double[rows][columns];
             for (int i = 0; i < rows; i++) {
@@ -191,5 +210,7 @@ public class MathLib {
         } while (determinante(matrix) == 0); // Reintentar si no tiene solucion unica.
         return matrix;
     }
+
+    /* =-=-= FIN MANEJO DE SISTEMA DE ECUACIONES =-=-= */
 
 }
