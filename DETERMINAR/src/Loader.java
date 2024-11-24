@@ -16,18 +16,55 @@ public class Loader {
      * Método que prepara el juego antes de iniciar el menú principal.
      */
     public static void load() {
-        process(5000);
         /* =-=-= Declaracion de Variables de Tipo Clase Menu =-=-= */
         Menu menu;
+        int option;
 
-        menu = dataAccess();
+        process(5000);
 
-        // Pasa el JFrame cargado como argumento al método run de Menu.
+        option = selectMode();
+
         process(2000);
-        menu.run();
+
+        if (option == 1) {
+            MenuGUI gui = dataAccessViaGUI();
+            gui.run();
+        } else if (option == 2) {
+            menu = dataAccessViaConsole();
+            menu.run();
+        }
+
+        System.out.println(CYAN + "Gracias por visitar. ¡Vuelve pronto!" + RESET);
     }
 
-    public static Menu dataAccess() {
+    public static int selectMode() {
+        Scanner in;
+        int modeOption;
+
+        in = new Scanner(System.in);
+
+        System.out.println(BLUE + "\n=== Bienvenido a DETERMINAR ===" + RESET);
+        System.out.println("Selecciona el modo de juego:");
+        System.out.println("1. Interfaz Gráfica");
+        System.out.println("2. Consola Integrada");
+        System.out.println("3. Salir");
+        System.out.print("Tu opción: ");
+
+        try {
+            modeOption = Integer.parseInt(in.nextLine());
+            if (modeOption < 1 || modeOption > 3) {
+                System.out.println("Opción inválida. Encerio desde ya estas fallando?\nIntenta de nuevo!");
+                return selectMode();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida. Encerio desde ya estas fallando?\nIntenta de nuevo!");
+            return selectMode();
+        }
+
+        return modeOption;
+    }
+
+    public static Menu dataAccessViaConsole() {
         /* =-=-= Declaracion de Variables de Tipo Clase Scanner =-=-= */
         Scanner in;
         /* =-=-= Declaracion de Variables de Tipo String[] =-=-= */
@@ -47,6 +84,27 @@ public class Loader {
         }
 
         return new Menu(playersList);
+    }
+
+    public static MenuGUI dataAccessViaGUI() {
+        /* =-=-= Declaracion de Variables =-=-= */
+        String[] playersList = new String[3];
+
+        // Recolectar nombres de los jugadores utilizando JOptionPane
+        for (int i = 0; i < playersList.length; i++) {
+            String playerName = JOptionPane.showInputDialog(null, "Ingrese el nombre del jugador " + (i + 1),
+                    "Ingreso de Jugadores", JOptionPane.QUESTION_MESSAGE);
+            if (playerName != null && !playerName.trim().isEmpty()) {
+                playersList[i] = playerName.trim();
+            } else {
+                JOptionPane.showMessageDialog(null, "El nombre del jugador no puede estar vacío.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                i--; // Para que vuelva a pedir el nombre del jugador que quedó vacío
+            }
+        }
+
+        // Crear y retornar la instancia de MenuGUI
+        return new MenuGUI(playersList);
     }
 
     /**

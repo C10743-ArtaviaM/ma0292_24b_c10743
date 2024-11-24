@@ -29,7 +29,7 @@ public class Player {
     }
 
     public String getName() {
-        return (GREEN + this.name + RESET);
+        return (this.name);
     }
 
     public double getScore() {
