@@ -101,6 +101,7 @@ El objetivo del juego es obtener el mayor puntaje posible modificando elementos 
    ```bash
    java -jar DETERMINAR.jar
    ```
+   y te libras de los siguientes dos pasos.
    
 2. **Compila los archivos fuente**
    ```bash
