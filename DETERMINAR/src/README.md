@@ -97,6 +97,11 @@ El objetivo del juego es obtener el mayor puntaje posible modificando elementos 
    git clone https://github.com/C10743-ArtaviaM/ma0292_24b_c10743.git
    cd determinar
    ```
+   o simplemente
+   ```bash
+   java -jar DETERMINAR.jar
+   ```
+   
 2. **Compila los archivos fuente**
    ```bash
    javac src/*.java
