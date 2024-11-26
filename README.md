@@ -114,7 +114,7 @@ We are Computer Science and Informatics Students <img src="https://media.giphy.c
 
 - 👨‍🏫 Professor: Felix Nunez Vanegas.
 
-- :mailbox:How to reach us: mauricio.artavia@ucr.ac.cr | /CORREO/@ucr.ac.cr | /CORREO/@ucr.ac.cr | /CORREO/@ucr.ac.cr
+- :mailbox:How to reach us: mauricio.artavia@ucr.ac.cr | kenneth.delgadocardenas@ucr.ac.cr | /CORREO/@ucr.ac.cr | /CORREO/@ucr.ac.cr
 
 - :bookmark_tabs: Description: Repository created with the objective of having a backup and workplace for the MA0294 Algebra Lineal Para Computacion course Project.
 
