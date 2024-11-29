@@ -87,7 +87,7 @@ El objetivo del juego es obtener el mayor puntaje posible modificando elementos 
 
 ### Requisitos
 
-1. **Java JDK 11 o superior** instalado en el sistema.
+1. **Java JDK 17 o superior** instalado en el sistema.
 2. Un terminal o IDE (como IntelliJ IDEA, Eclipse o VSCode [recomendado]).
 
 ### Pasos para Ejecutar
